@@ -4,7 +4,6 @@ const axios = require('axios');
 class RequestManager {
 	constructor() {
 		this.constants = constants;
-		console.log(this);
 	}
 
 	request(method, url, data) {
