@@ -2,7 +2,8 @@ const constants = require('../../Constants');
 const axios = require('axios');
 
 class RequestManager {
-	constructor() {
+	constructor(client) {
+		this.client = client;
 		this.constants = constants;
 	}
 
