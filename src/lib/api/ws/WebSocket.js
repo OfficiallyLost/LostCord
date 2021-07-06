@@ -10,6 +10,7 @@ class WebSocket {
 	}
 
 	on() {
+		console.log(this.client);
 		return this.client.on('READY');
 	}
 }

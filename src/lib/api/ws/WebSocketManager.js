@@ -31,11 +31,12 @@ class WebSocketManager {
 							}
 						})
 					);
-			}
-			try {
-				this.client.emit('READY', data);
-			} catch (err) {
-				console.log(err);
+
+					try {
+						this.client.emit('READY', data);
+					} catch (err) {
+						console.log(err);
+					}
 			}
 		});
 	}
