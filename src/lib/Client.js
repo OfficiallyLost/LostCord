@@ -2,7 +2,7 @@
 
 const EventEmitter = require('events');
 const Request = require('./api/rest/requests');
-const WebSocket = require('./api/ws/ws');
+const WebSocket = require('./api/ws/WebSocket');
 const Endpoints = require('./api/rest/Endpoints');
 
 class Client extends EventEmitter {
@@ -20,7 +20,18 @@ class Client extends EventEmitter {
 		this.request = new Request(this);
 	}
 
-	connect() {}
+	connect() {
+		this.ws.connect();
+	}
+
+	on(event) {
+		console.log(`c ${event}`);
+		try {
+			this.ws.on(event);
+		} catch (err) {
+			console.log(err);
+		}
+	}
 }
 
 module.exports = Client;
