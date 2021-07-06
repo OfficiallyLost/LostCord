@@ -2,8 +2,9 @@ const ws = require('ws');
 const constants = require('../../Constants');
 
 class WebSocketManager {
-	constructor() {
+	constructor(client) {
 		this.ws = new ws(constants.WEBSOCKET);
+		this.client = client;
 	}
 
 	async connect() {
@@ -17,7 +18,6 @@ class WebSocketManager {
 					setInterval(() => {
 						this.send(JSON.stringify({ op: 1, d: null }));
 					}, heartbeatInterval);
-
 					this.send(
 						JSON.stringify({
 							op: 2,
@@ -31,8 +31,11 @@ class WebSocketManager {
 							}
 						})
 					);
-
-				case 1:
+			}
+			try {
+				this.client.emit('READY', data);
+			} catch (err) {
+				console.log(err);
 			}
 		});
 	}
