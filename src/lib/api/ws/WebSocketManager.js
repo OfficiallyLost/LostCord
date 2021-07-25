@@ -1,6 +1,8 @@
 const ws = require('ws');
 const Message = require('../../structures/Message');
 const constants = require('../../Constants');
+const wsEvents = require('./WebSocketEvents');
+const DiscordEventHandler = require('../../discord/DiscordEvents');
 
 class WebSocketManager {
 	constructor(client) {
@@ -23,32 +25,8 @@ class WebSocketManager {
 			}
 		};
 
-		this.ws.on('open', () => {
-			console.log('sent payload');
-		});
-
-		this.ws.on('message', (message) => {
-			const payload = JSON.parse(message);
-			switch (payload.op) {
-				case constants.OPCODES.HELLO:
-					this.heartbeatInterval = payload.d.heartbeat_interval;
-					this.send(identify);
-
-					setInterval(() => {
-						this.send({ op: 1, d: null });
-					}, this.heartbeatInterval);
-			}
-
-			switch (payload.t) {
-				case 'MESSAGE_CREATE':
-					this.client.emit('messageCreate', new Message(payload.d, this.client));
-					break;
-
-				case 'READY':
-					this.client.log('[WS] READY');
-					this.client.emit('ready');
-			}
-		});
+		wsEvents.open(this.ws);
+		wsEvents.message(this.ws, this, identify);
 	}
 
 	send(data) {
