@@ -3,7 +3,7 @@ const axios = require('axios');
 
 class RequestManager {
 	constructor(client) {
-		this.client = client;
+		Object.defineProperty(this, 'client', { value: client });
 		this.constants = constants;
 	}
 
