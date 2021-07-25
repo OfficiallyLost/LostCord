@@ -3,6 +3,7 @@ const endpoints = require('./Endpoints');
 
 class Request {
 	constructor(client) {
+		Object.defineProperty(this, 'client', { value: client });
 		this.RequestManager = new RequestManager(client);
 		this.endpoints = endpoints;
 	}
@@ -22,6 +23,13 @@ class Request {
 		return await this.RequestManager.request(
 			'GET',
 			`${this.RequestManager.constants.BASE_URL}${this.endpoints.GET_GUILD(guildID)}`
+		);
+	}
+
+	async getUser(userID) {
+		return await this.RequestManager.request(
+			'GET',
+			`${this.RequestManager.constants.BASE_URL}${this.endpoints.GET_USER(userID)}`
 		);
 	}
 }
