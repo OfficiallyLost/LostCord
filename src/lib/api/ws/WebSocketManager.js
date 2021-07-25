@@ -4,45 +4,61 @@ const constants = require('../../Constants');
 class WebSocketManager {
 	constructor(client) {
 		this.ws = new ws(constants.WEBSOCKET);
-		this.client = client;
+		Object.defineProperty(this, 'client', { value: client });
+		this.heartbeatInterval = 0;
 	}
 
 	async connect() {
-		this.ws.on('message', (message) => {
-			const data = JSON.parse(message);
+		console.log(this.client);
+		let payload = {
+			op: 2,
+			d: {
+				token: this.client.token,
+				properties: {
+					$os: 'linux',
+					intents: this.client.options.intents || 513,
+					$browser: 'lostcord',
+					$device: 'lostcord'
+				}
+			}
+		};
 
-			switch (data.op) {
+		console.log(payload);
+
+		this.ws.on('open', () => {
+			console.log('sent payload');
+		});
+
+		this.ws.on('message', (message) => {
+			const payload = JSON.parse(message);
+			switch (payload.op) {
 				case constants.OPCODES.HELLO:
-					const heartbeatInterval = data.d;
+					this.heartbeatInterval = payload.d.heartbeat_interval;
 
 					setInterval(() => {
-						this.send(JSON.stringify({ op: 1, d: null }));
-					}, heartbeatInterval);
-					this.send(
-						JSON.stringify({
-							op: 2,
-							d: {
-								token: this.client.token,
-								properties: {
-									$os: 'linux',
-									$browser: 'lostcord',
-									$device: 'lostcord'
-								}
-							}
-						})
-					);
+						this.heartbeat(this.heartbeatInterval);
+						console.log('sent heartbeat and op 1');
+					}, this.heartbeatInterval);
+			}
 
-					try {
-						this.client.emit('READY', data);
-					} catch (err) {
-						console.log(err);
-					}
+			switch (payload.t) {
+				case 'MESSAGE_CREATE':
+					console.log('message create');
+					break;
+				case 'READY':
+					console.log('ready');
 			}
 		});
 	}
 
 	send(data) {
-		this.ws.send(data);
+		this.ws.send(JSON.stringify(data));
+	}
+
+	heartbeat(ms) {
+		return setInterval(() => {
+			this.send({ op: 1, d: null });
+		}, ms);
 	}
 }
 
