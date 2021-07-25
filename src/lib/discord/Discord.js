@@ -2,7 +2,7 @@ const request = require('../api/rest/requests');
 
 class Discord {
 	constructor(client) {
-		this.client = client;
+		Object.defineProperty(this, 'client', { value: client });
 	}
 
 	get guild() {

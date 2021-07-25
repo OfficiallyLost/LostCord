@@ -1,4 +1,5 @@
 const Message = require('../structures/Message');
+const User = require('../structures/User');
 
 function handleEvents(data, payload) {
 	switch (payload.t) {
@@ -7,6 +8,8 @@ function handleEvents(data, payload) {
 			break;
 
 		case 'READY':
+			data.client.user = new User(payload.d.user, data.client);
+
 			data.client.log('[WS] READY');
 			data.client.emit('ready');
 	}
