@@ -9,21 +9,18 @@ class WebSocketManager {
 	}
 
 	async connect() {
-		console.log(this.client);
-		let payload = {
+		const identify = {
 			op: 2,
 			d: {
+				intents: this.client.options.intents || 513,
 				token: this.client.token,
 				properties: {
-					$os: 'linux',
-					intents: this.client.options.intents || 513,
+					$os: process.platform,
 					$browser: 'lostcord',
 					$device: 'lostcord'
 				}
 			}
 		};
-
-		console.log(payload);
 
 		this.ws.on('open', () => {
 			console.log('sent payload');
@@ -34,31 +31,27 @@ class WebSocketManager {
 			switch (payload.op) {
 				case constants.OPCODES.HELLO:
 					this.heartbeatInterval = payload.d.heartbeat_interval;
+					this.send(identify);
 
 					setInterval(() => {
-						this.heartbeat(this.heartbeatInterval);
-						console.log('sent heartbeat and op 1');
+						this.send({ op: 1, d: null });
 					}, this.heartbeatInterval);
 			}
 
 			switch (payload.t) {
 				case 'MESSAGE_CREATE':
-					console.log('message create');
+					if (payload.d.type === 0) payload.d.type = { raw: 0, easy: 'Text' };
+					this.client.emit('messageCreate', payload.d);
 					break;
+
 				case 'READY':
-					console.log('ready');
+					this.client.log('Client is running');
 			}
 		});
 	}
 
 	send(data) {
 		this.ws.send(JSON.stringify(data));
-	}
-
-	heartbeat(ms) {
-		return setInterval(() => {
-			this.send({ op: 1, d: null });
-		}, ms);
 	}
 }
 
