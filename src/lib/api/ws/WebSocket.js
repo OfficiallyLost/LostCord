@@ -8,11 +8,6 @@ class WebSocket {
 	connect() {
 		this.WebSocketManager.connect();
 	}
-
-	on() {
-		console.log(this.client);
-		return this.client.on('READY');
-	}
 }
 
 module.exports = WebSocket;
