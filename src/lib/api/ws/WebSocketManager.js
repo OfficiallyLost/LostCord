@@ -1,4 +1,5 @@
 const ws = require('ws');
+const Message = require('../../structures/Message');
 const constants = require('../../Constants');
 
 class WebSocketManager {
@@ -10,7 +11,7 @@ class WebSocketManager {
 
 	async connect() {
 		const identify = {
-			op: 2,
+			op: constants.OPCODES.IDENTIFY,
 			d: {
 				intents: this.client.options.intents || 513,
 				token: this.client.token,
@@ -40,12 +41,12 @@ class WebSocketManager {
 
 			switch (payload.t) {
 				case 'MESSAGE_CREATE':
-					if (payload.d.type === 0) payload.d.type = { raw: 0, easy: 'Text' };
-					this.client.emit('messageCreate', payload.d);
+					this.client.emit('messageCreate', new Message(payload.d, this.client));
 					break;
 
 				case 'READY':
-					this.client.log('Client is running');
+					this.client.log('[WS] READY');
+					this.client.emit('ready');
 			}
 		});
 	}
