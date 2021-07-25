@@ -1,11 +1,8 @@
 const LostCord = require('../index');
-const client = new LostCord('put ur token here', {
-	guild: 'a random guild id'
+const client = new LostCord('', {
+	guild: '650128487511883796'
 });
 
-console.log(client.discord.guild.then((e) => console.log(e)));
+client.on('messageCreate', (message) => console.log(message));
 
-// console.log(client.discord.client.request);
-// client.on('READY', () => console.log('online'));
-
-// client.connect();
+client.connect();
