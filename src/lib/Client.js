@@ -2,6 +2,7 @@ const EventEmitter = require('events');
 const Request = require('./api/rest/requests');
 const WebSocket = require('./api/ws/WebSocket');
 const Discord = require('./discord/Discord');
+const chalk = require('chalk');
 
 class Client extends EventEmitter {
 	constructor(token, options) {
@@ -20,6 +21,7 @@ class Client extends EventEmitter {
 		this.request = new Request(this);
 		this._discord = new Discord(this);
 		this.startTime = 0;
+		this.log = (data) => console.log(chalk.greenBright.bold(`[LOGGER] ${data}`));
 	}
 
 	connect() {
