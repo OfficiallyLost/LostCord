@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/OfficiallyLost/LostCord#readme",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "chalk": "^4.1.1"
   }
 }
