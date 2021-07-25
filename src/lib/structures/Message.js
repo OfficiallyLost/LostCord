@@ -1,9 +1,9 @@
 const Base = require('./Base');
 const constants = require('../Constants');
 
-class Message extends Base {
+class Message {
 	constructor(raw, client) {
-		super(raw.id);
+		// super(raw.id);
 		this.raw = raw;
 		Object.defineProperty(this, 'client', { value: client });
 	}
