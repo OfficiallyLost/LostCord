@@ -1,8 +1,8 @@
 const ws = require('ws');
-const Message = require('../../structures/Message');
 const constants = require('../../Constants');
 const wsEvents = require('./WebSocketEvents');
-const DiscordEventHandler = require('../../discord/DiscordEvents');
+const HandleDiscordEvents = require('../../discord/DiscordEvents');
+const HandleWSConnection = require('./HandleConnection');
 
 class WebSocketManager {
 	constructor(client) {
@@ -26,7 +26,13 @@ class WebSocketManager {
 		};
 
 		wsEvents.open(this.ws);
-		wsEvents.message(this.ws, this, identify);
+
+		this.ws.on('message', (message) => {
+			const payload = JSON.parse(message);
+
+			HandleWSConnection(this, payload, identify);
+			HandleDiscordEvents(this, payload);
+		});
 	}
 
 	send(data) {
