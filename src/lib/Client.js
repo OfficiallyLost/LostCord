@@ -3,6 +3,7 @@ const Request = require('./api/rest/requests');
 const WebSocket = require('./api/ws/WebSocket');
 const Discord = require('./discord/Discord');
 const chalk = require('chalk');
+const User = require('./structures/User');
 
 class Client extends EventEmitter {
 	constructor(token, options) {
@@ -26,11 +27,6 @@ class Client extends EventEmitter {
 
 	connect() {
 		this.ws.connect();
-	}
-
-	get uptime() {
-		this.startTime = Date.now();
-		return this.startTime;
 	}
 
 	get invite() {
