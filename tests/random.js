@@ -1,11 +1,11 @@
 const LostCord = require('../index');
-const client = new LostCord('token', {
-	guild: 'guld id optional'
+const client = new LostCord('', {
+	guild: ''
 });
 
-client.on('messageCreate', (message) => {
-	console.log(`${message.raw.author.username} said ${message.raw.content}`);
+client.on('messageCreate', async (message) => {
+	(await message.channel).createMessage({ content: 'i', embeds: [ { title: 'hi' } ] });
+	console.log(`${message.raw.author.username} said ${message.raw.content} | ${client.user.raw.username}`);
 });
 
 client.connect();
-console.log(client.user);
