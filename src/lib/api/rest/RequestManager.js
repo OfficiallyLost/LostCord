@@ -7,18 +7,18 @@ class RequestManager {
 		this.constants = constants;
 	}
 
-	request(method, url, data) {
+	async request(method, url, data) {
 		const options = {
-			url,
 			method,
+			url,
 			headers: {
 				Authorization: `Bot ${this.client.token}`,
-				'Content-Type': 'applicaton/json'
+				'Content-Type': 'application/json'
 			},
 			data
 		};
-
-		return axios(options);
+		console.log(options);
+		return await axios(options);
 	}
 }
 
