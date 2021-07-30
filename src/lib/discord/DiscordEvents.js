@@ -9,11 +9,18 @@ function handleEvents(data, payload) {
 
 		case 'READY':
 			data.client.user = new User(payload.d.user, data.client);
-			data.client.guilds = payload.d.guilds.map((e) => e.id);
+			data.client.guilds = payload.d.guilds.map((guild) => guild.id);
+			data.client.users = [];
+			data.client.channels = [];
 
 			(async function() {
-				for (const guildID of data.client.guilds) {
-					const guild = await data.client.request.getGuild(guildID);
+				let guildChannels = [];
+				for (const guild of data.client.guilds) {
+					guildChannels.push(await data.client.request.getGuildChannels(guild));
+				}
+
+				for (const channel of guildChannels[0].data) {
+					data.client.channels.push(channel.id);
 				}
 			})();
 
