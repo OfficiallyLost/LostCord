@@ -6,9 +6,6 @@ class User extends Base {
 		this.raw = raw;
 		Object.defineProperty(this, 'client', { value: client });
 	}
-	get username() {
-		return console.log(this.client);
-	}
 }
 
 module.exports = User;
