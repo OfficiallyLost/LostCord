@@ -8,8 +8,9 @@ module.exports.DISCORD = {
 };
 
 module.exports.OPCODES = {
-	HELLO: 10,
-	IDENTIFY: 2
+	HEARTBEAT: 1,
+	IDENTIFY: 2,
+	HELLO: 10
 };
 
 module.exports.CHANNEL = {
