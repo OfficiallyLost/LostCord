@@ -7,7 +7,7 @@ function HandleWSConnection(data, payload, identify) {
 			data.send(identify);
 
 			setInterval(() => {
-				data.send({ op: 1, d: null });
+				data.send({ op: constants.OPCODES.HEARTBEAT, d: null });
 			}, data.heartbeatInterval);
 	}
 }
