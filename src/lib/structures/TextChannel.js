@@ -12,7 +12,6 @@ class TextChannel extends Channel {
 	}
 
 	createMessage({ content, embeds, file, components }) {
-
 		if (!content instanceof String) return Promise.reject(new Error('content must be of type String'));
 		if (!embeds instanceof Array) return Promise.reject(new Error('embeds must be of type Array'));
 		// No idea what type file is
