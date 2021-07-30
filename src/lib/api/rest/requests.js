@@ -26,6 +26,14 @@ class Request {
 		);
 	}
 
+	async getGuildChannels(guildID) {
+		if (!guildID) return Promise.reject(new Error('You must enter a guild ID to get channels'));
+
+		return await this.RequestManager.request(
+			'GET',
+			`${this.RequestManager.constants.BASE_URL}${this.endpoints.GET_GUILD_CHANNELS(guildID)}`
+		);
+	}
 	async getUser(userID) {
 		if (!userID) return Promise.reject(new Error('You must enter a user ID to get data on'));
 
@@ -53,6 +61,7 @@ class Request {
 			{ content, embeds, file, components, options }
 		);
 	}
+
 }
 
 module.exports = Request;
