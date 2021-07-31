@@ -13,18 +13,21 @@ class Client extends EventEmitter {
 		this.options = Object.assign(
 			{
 				shards: 1,
-				reconnectAttempts: Infinity,
 				permissions: 8,
-				guild: ''
+				guild: '',
+				reconnect: true
 			},
 			options
 		);
+		this.reconnectAttempts = 0;
+		this.status = '';
 		this.ws = new WebSocket(this);
 		this.request = new Request(this);
 		this._discord = new Discord(this);
 		this.startTime = 0;
 		this.messageChannel = {};
 		this.log = (data) => console.log(chalk.greenBright.bold(`[LOGGER] ${data}`));
+		this.error = (data) => console.log(chalk.redBright.bold(`[ERROR] ${data}`));
 	}
 
 	connect() {
