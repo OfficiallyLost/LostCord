@@ -32,13 +32,35 @@ class Client extends EventEmitter {
 	}
 
 	get invite() {
-		const id = '650136984211292180'; // temp
-		return `https://discord.com/oauth2/authorize?client_id=${id}&permissions=${this.options
+		return `https://discord.com/oauth2/authorize?client_id=${this.user.id}&permissions=${this.options
 			.permissions}&response_type=code&scope=applications.commands%20bot`;
 	}
 
 	get discord() {
 		return this._discord;
+	}
+	/**
+	 * 
+	 * @param {Object} param an object for organisation
+	 * @param {String} param the channel ID to send the mesage to
+	 * @param {String} param the message content to send
+	 * @param {Array} param an array of embeds
+	 * @param {} param file 
+	 * @param {Array} param An array of message components 
+	 * @returns A discord message
+	 */
+
+	createMessage({ channel, content, embeds, file, components }) {
+		if (!content instanceof String) return Promise.reject(new Error('content must be of type String'));
+		if (!embeds instanceof Array) return Promise.reject(new Error('embeds must be of type Array'));
+		// No idea what type file is
+		if (!components instanceof Array) return Promise.reject(new Error('components must be of type Array'));
+
+		try {
+			return this.request.createMessage(channel, content, embeds, file, components);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }
 
