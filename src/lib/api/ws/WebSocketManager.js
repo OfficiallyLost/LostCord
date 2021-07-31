@@ -27,11 +27,11 @@ class WebSocketManager {
 
 		wsEvents.open(this.ws);
 
-		this.ws.on('message', (message) => {
+		this.ws.on('message', async (message) => {
 			const payload = JSON.parse(message);
 
 			HandleWSConnection(this, payload, identify);
-			HandleDiscordEvents(this, payload);
+			await HandleDiscordEvents(this, payload);
 		});
 	}
 
