@@ -8,6 +8,7 @@ module.exports.DISCORD = {
 };
 
 module.exports.OPCODES = {
+	DISPATCH: 0,
 	HEARTBEAT: 1,
 	IDENTIFY: 2,
 	HELLO: 10
