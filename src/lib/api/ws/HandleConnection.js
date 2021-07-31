@@ -1,10 +1,10 @@
 const constants = require('../../Constants');
 
-function HandleWSConnection(data, payload, identify) {
+function HandleWSConnection(data, payload) {
 	switch (payload.op) {
 		case constants.OPCODES.HELLO:
 			data.heartbeatInterval = payload.d.heartbeat_interval;
-			data.send(identify);
+			data.identify();
 
 			setInterval(() => {
 				data.send({ op: constants.OPCODES.HEARTBEAT, d: null });

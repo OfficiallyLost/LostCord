@@ -12,6 +12,21 @@ class WebSocketManager {
 	}
 
 	async connect() {
+		wsEvents.open(this.ws);
+
+		this.ws.on('message', async (message) => {
+			const payload = JSON.parse(message);
+
+			HandleWSConnection(this, payload);
+			await HandleDiscordEvents(this, payload);
+		});
+	}
+
+	send(data) {
+		this.ws.send(JSON.stringify(data));
+	}
+
+	identify() {
 		const identify = {
 			op: constants.OPCODES.IDENTIFY,
 			d: {
@@ -25,18 +40,7 @@ class WebSocketManager {
 			}
 		};
 
-		wsEvents.open(this.ws);
-
-		this.ws.on('message', async (message) => {
-			const payload = JSON.parse(message);
-
-			HandleWSConnection(this, payload, identify);
-			await HandleDiscordEvents(this, payload);
-		});
-	}
-
-	send(data) {
-		this.ws.send(JSON.stringify(data));
+		this.send(identify);
 	}
 }
 
