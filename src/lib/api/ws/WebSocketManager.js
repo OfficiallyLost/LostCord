@@ -26,6 +26,16 @@ class WebSocketManager {
 		this.ws.send(JSON.stringify(data));
 	}
 
+	disconnect() {
+		this.reset();
+		if (!this.ws) {
+			return;
+		}
+
+		this.ws.close();
+		process.exit(1);
+	}
+
 	identify() {
 		const identify = {
 			op: constants.OPCODES.IDENTIFY,
