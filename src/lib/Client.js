@@ -3,8 +3,6 @@ const Request = require('./api/rest/requests');
 const WebSocket = require('./api/ws/WebSocket');
 const Discord = require('./discord/Discord');
 const chalk = require('chalk');
-const User = require('./structures/User');
-const Channel = require('./structures/Channel');
 
 class Client extends EventEmitter {
 	constructor(token, options) {
@@ -28,6 +26,8 @@ class Client extends EventEmitter {
 		this.messageChannel = {};
 		this.log = (data) => console.log(chalk.greenBright.bold(`[LOGGER] ${data}`));
 		this.error = (data) => console.log(chalk.redBright.bold(`[ERROR] ${data}`));
+
+		if (!this.token) return new Error('[TOKEN] You must provide a valid token');
 	}
 
 	connect() {
@@ -64,6 +64,42 @@ class Client extends EventEmitter {
 		} catch (error) {
 			console.log(error);
 		}
+	}
+
+	createCommand({ name, description, options }) {
+		const test = {
+			name: 'blep',
+			description: 'Send a random adorable animal photo',
+			options: [
+				{
+					name: 'animal',
+					description: 'The type of animal',
+					type: 3,
+					required: true,
+					choices: [
+						{
+							name: 'Dog',
+							value: 'animal_dog'
+						},
+						{
+							name: 'Cat',
+							value: 'animal_cat'
+						},
+						{
+							name: 'Penguin',
+							value: 'animal_penguin'
+						}
+					]
+				},
+				{
+					name: 'only_smol',
+					description: 'Whether to show only baby animals',
+					type: 5,
+					required: false
+				}
+			]
+		};
+		this.request.createGuildSlashCommand(this.application.id, '850049610776576000', test);
 	}
 }
 
