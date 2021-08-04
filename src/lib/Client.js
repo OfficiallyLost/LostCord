@@ -66,9 +66,9 @@ class Client extends EventEmitter {
 		}
 	}
 
-	createCommand({ name, description, options }) {
+	createGuildCommand({ name, description, options }) {
 		const test = {
-			name: 'blep',
+			name: 'test',
 			description: 'Send a random adorable animal photo',
 			options: [
 				{
@@ -78,15 +78,15 @@ class Client extends EventEmitter {
 					required: true,
 					choices: [
 						{
-							name: 'Dog',
+							name: 'dog',
 							value: 'animal_dog'
 						},
 						{
-							name: 'Cat',
+							name: 'dat',
 							value: 'animal_cat'
 						},
 						{
-							name: 'Penguin',
+							name: 'penguin',
 							value: 'animal_penguin'
 						}
 					]
@@ -99,7 +99,7 @@ class Client extends EventEmitter {
 				}
 			]
 		};
-		this.request.createGuildSlashCommand(this.application.id, '850049610776576000', test);
+		this.request.createGuildSlashCommand(this.application.id, '650128487511883796', test);
 	}
 }
 
