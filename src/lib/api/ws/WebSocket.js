@@ -1,5 +1,5 @@
 const WebSocketManager = require('./WebSocketManager');
-
+const constants = require('../../Constants');
 class WebSocket {
 	constructor(client) {
 		this.WebSocketManager = new WebSocketManager(client);
@@ -10,13 +10,18 @@ class WebSocket {
 		this.WebSocketManager.connect();
 	}
 
-	disconnect() {
-		this.WebSocketManager.disconnect();
+	disconnect(error) {
+		return this.WebSocketManager.disconnect(error);
 	}
 
 	reset() {
 		this.client.reconnectAttempts = 0;
 		this.client.status = 'disconnected';
+	}
+
+	async restart() {
+		this.WebSocketManager.ws = null;
+		this.WebSocketManager.initialise();
 	}
 }
 
