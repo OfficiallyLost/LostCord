@@ -93,7 +93,6 @@ class Request {
 	}
 
 	async createGuildSlashCommand(applicationID, guildID, params) {
-		console.log(`application id ${JSON.stringify(applicationID)}\nparams:${JSON.stringify(params)}`);
 		if (params.name.match('^[w-]{1,32}$')) {
 			return Promise.reject(new Error('The command name must match "^[w-]{1,32}$"'));
 		}
@@ -109,7 +108,7 @@ class Request {
 				applicationID,
 				guildID
 			)}`,
-			{ name: params.name.toLowerCase(), description: params.description, options: params.option }
+			{ name: params.name.toLowerCase(), description: params.description, options: params.options }
 		);
 	}
 }
