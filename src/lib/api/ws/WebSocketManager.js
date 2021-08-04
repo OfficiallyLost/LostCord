@@ -6,18 +6,20 @@ const HandleWSConnection = require('./HandleConnection');
 
 class WebSocketManager {
 	constructor(client) {
-		this.ws = new ws(constants.WEBSOCKET);
+		this.ws = null;
 		Object.defineProperty(this, 'client', { value: client });
 		this.heartbeatInterval = 0;
 	}
 
 	async connect() {
+		this.initialise();
+
 		wsEvents.open(this.ws);
 
 		this.ws.on('message', async (message) => {
 			const payload = JSON.parse(message);
 
-			HandleWSConnection(this, payload);
+			await HandleWSConnection(this, payload);
 			await HandleDiscordEvents(this, payload);
 		});
 	}
@@ -27,13 +29,32 @@ class WebSocketManager {
 	}
 
 	disconnect() {
-		this.reset();
-		if (!this.ws) {
+		if (this.ws === null) {
 			return;
+		}
+
+		if (error) {
+			this.client.emit('error', error);
 		}
 
 		this.ws.close();
 		process.exit(1);
+	}
+
+	initialise() {
+		this.client.status = 'connecting';
+
+		if (!this.client.token) {
+			this.disconnect(new Error('You must provide a valid token'));
+		}
+
+		this.ws = new ws(constants.WEBSOCKET);
+	}
+
+	heartbeat() {
+		setInterval(() => {
+			this.send({ op: constants.OPCODES.HEARTBEAT, d: null });
+		}, this.heartbeatInterval);
 	}
 
 	identify() {
