@@ -8,8 +8,12 @@ client.on('reconnect', (message) => {
 });
 
 client.on('messageCreate', async (message) => {
-	if (message.raw.guild_id !== '850049610776576000') return;
-	await client.createCommand();
+	if (message.raw.author.id !== '475371795185139712') return;
+	await client.createGuildCommand({
+		name: 'hi',
+		description: 'description',
+		options: { name: 'hi', required: true }
+	});
 
 	if (message.raw.content.startsWith('e')) {
 		try {
