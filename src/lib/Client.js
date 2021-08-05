@@ -13,7 +13,8 @@ class Client extends EventEmitter {
 				shards: 1,
 				permissions: 8,
 				guild: '',
-				reconnect: true
+				reconnect: true,
+				scopes: []
 			},
 			options
 		);
@@ -36,7 +37,7 @@ class Client extends EventEmitter {
 
 	get invite() {
 		return `https://discord.com/oauth2/authorize?client_id=${this.user.id}&permissions=${this.options
-			.permissions}&response_type=code&scope=applications.commands%20bot`;
+			.permissions}&response_type=code&scope=${this.options.scopes.join('%20') || 'applications.commands%20bot'}`;
 	}
 
 	get discord() {
