@@ -17,8 +17,12 @@ async function handleEvents(data, payload) {
 			break;
 
 		case 'APPLICATION_COMMAND_CREATE':
-			console.log(payload.d);
 			data.client.emit('applicationCommandCreate', payload.d);
+			break;
+
+		case 'INTERACTION_CREATE':
+			data.client.emit('interactionCreate', payload.d);
+			break;
 
 		case 'MESSAGE_CREATE':
 			data.client.emit('messageCreate', new Message(payload.d, data.client));
