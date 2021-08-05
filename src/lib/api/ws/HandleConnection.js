@@ -2,6 +2,11 @@ const constants = require('../../Constants');
 
 async function HandleWSConnection(data, payload) {
 	switch (payload.op) {
+		case constants.OPCODES.DISPATCH:
+			if (this.client.options.disabledEvents[packet.t]) {
+			}
+
+			break;
 		case constants.OPCODES.HELLO:
 			data.heartbeatInterval = payload.d.heartbeat_interval;
 			data.identify();
@@ -11,7 +16,6 @@ async function HandleWSConnection(data, payload) {
 			break;
 
 		case constants.OPCODES.HEARTBEAT:
-			console.log(payload);
 			data.heartbeat();
 			break;
 
