@@ -91,6 +91,24 @@ class Request {
 			{ name: params.name.toLowerCase(), description: params.description, options: params.option }
 		);
 	}
+	async createGlobalSlashCommand(applicationID, guildID, params) {
+		if (params.name.match('^[w-]{1,32}$')) {
+			return Promise.reject(new Error('The command name must match "^[w-]{1,32}$"'));
+		}
+
+		if (!applicationID) return Promise.reject(new Error('You must enter an application ID'));
+		if (!params.name) return Promise.reject(new Error('You must enter the command name'));
+		if (!params.description) return Promise.reject(new Error('You must enter the command description'));
+
+		return await this.RequestManager.request(
+			'POST',
+			`${this.RequestManager.constants.BASE_URL}${this.endpoints.CREATE_GLOBAL_SLASH_COMMAND(
+				applicationID,
+				guildID
+			)}`,
+			{ name: params.name.toLowerCase(), description: params.description, options: params.options }
+		);
+	}
 
 	async createGuildSlashCommand(applicationID, guildID, params) {
 		if (params.name.match('^[w-]{1,32}$')) {
@@ -100,7 +118,6 @@ class Request {
 		if (!applicationID) return Promise.reject(new Error('You must enter an application ID'));
 		if (!params.name) return Promise.reject(new Error('You must enter the command name'));
 		if (!params.description) return Promise.reject(new Error('You must enter the command description'));
-		if (!params.options) return Promise.reject(new Error('You must enter the command options'));
 
 		return await this.RequestManager.request(
 			'POST',
@@ -109,6 +126,25 @@ class Request {
 				guildID
 			)}`,
 			{ name: params.name.toLowerCase(), description: params.description, options: params.options }
+		);
+	}
+
+	async createSlashCommandResponse(interactionID, interactionToken, params) {
+		console.log(
+			`${this.RequestManager.constants.BASE_URL}${this.endpoints.REPLY_TO_SLASH_COMMAND(
+				interactionID,
+				interactionToken
+			)}`
+		);
+		if (!interactionID || !interactionToken) return Promise.reject(new Error('You must provide the valid params'));
+
+		return await this.RequestManager.request(
+			'POST',
+			`${this.RequestManager.constants.BASE_URL}${this.endpoints.REPLY_TO_SLASH_COMMAND(
+				interactionID,
+				interactionToken
+			)}`,
+			{ type: 4, data: { content: params.content } }
 		);
 	}
 }
