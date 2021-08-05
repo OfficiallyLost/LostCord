@@ -54,53 +54,29 @@ class Client extends EventEmitter {
 	 * @returns A discord message
 	 */
 
-	createMessage({ channel, content, embeds, file, components }) {
+	createMessage(data = { channel, content, embeds, file, components }) {
 		if (!content instanceof String) return Promise.reject(new Error('content must be of type String'));
 		if (!embeds instanceof Array) return Promise.reject(new Error('embeds must be of type Array'));
 		// No idea what type file is
 		if (!components instanceof Array) return Promise.reject(new Error('components must be of type Array'));
 
 		try {
-			return this.request.createMessage(channel, content, embeds, file, components);
+			return this.request.createMessage(channel, content, data);
 		} catch (error) {
 			console.log(error);
 		}
 	}
 
-	createGuildCommand({ name, description, options }) {
-		const test = {
-			name: 'test',
-			description: 'Send a random adorable animal photo',
-			options: [
-				{
-					name: 'animal',
-					description: 'The type of animal',
-					type: 3,
-					required: true,
-					choices: [
-						{
-							name: 'dog',
-							value: 'animal_dog'
-						},
-						{
-							name: 'dat',
-							value: 'animal_cat'
-						},
-						{
-							name: 'penguin',
-							value: 'animal_penguin'
-						}
-					]
-				},
-				{
-					name: 'only_smol',
-					description: 'Whether to show only baby animals',
-					type: 5,
-					required: false
-				}
-			]
-		};
-		this.request.createGuildSlashCommand(this.application.id, '650128487511883796', test);
+	createGlobalCommand(data = { name, description, options }) {
+		this.request.createGuildSlashCommand(this.application.id, data);
+	}
+
+	createGuildCommand(data = { guild, name, description, options }) {
+		this.request.createGuildSlashCommand(this.application.id, guild, data);
+	}
+
+	reply(id, token, data = { content, embeds, file, components }) {
+		this.request.createSlashCommandResponse(id, token, data);
 	}
 }
 
