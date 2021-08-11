@@ -1,6 +1,6 @@
 # A NodeJS Discord Library for [Discord](https://discord.com)
 
-LostCord is a promise based, object-orientated and easily usuable Discord Library, mainly orientated around myself, but can be used for everyone. An understanding of NodeJS is required.
+LostCord is a promise based, object-orientated and easily usable Discord Library, mainly orientated around myself, but can be used by everyone. An understanding of NodeJS is required.
 
 # Installation 
 ```js
@@ -42,7 +42,7 @@ client.on('messageCreate', async (message) => {
 });
 ```
 # Help
-If you are struggling / need help with LostCord, feel free to reach out to me, just join my [discord server](https://discord.gg/FWTRPS9)
+If you are struggling / need help with LostCord, feel free to reach me out, joining my [discord server](https://discord.gg/FWTRPS9).
 
-# Contributing
-Fork, code, submit PR. 
+# How to contribute:
+You can fork, code, or submit a PR. 
