@@ -129,12 +129,6 @@ class Request {
 	}
 
 	async createSlashCommandResponse(interactionID, interactionToken, params) {
-		console.log(
-			`${this.RequestManager.constants.BASE_URL}${this.endpoints.REPLY_TO_SLASH_COMMAND(
-				interactionID,
-				interactionToken
-			)}`
-		);
 		if (!interactionID || !interactionToken) return Promise.reject(new Error('You must provide the valid params'));
 
 		return await this.RequestManager.request(
@@ -143,7 +137,28 @@ class Request {
 				interactionID,
 				interactionToken
 			)}`,
-			{ type: 4, data: { content: params.content } }
+			{
+				type: 4,
+				data: {
+					content: params.content,
+					embeds: params.embeds,
+					file: params.file,
+					components: params.components
+				}
+			}
+		);
+	}
+
+	async editSlashCommandResponse(applicationID, interactionToken, params) {
+		if (!applicationID || !interactionToken) return Promise.reject(new Error('You must provide the valid params'));
+		console.log(this.endpoints.EDIT_SLASH_COMMAND_RESPONSE(applicationID, interactionToken));
+		return await this.RequestManager.request(
+			'PATCH',
+			`${this.RequestManager.constants.BASEURL}${this.endpoints.EDIT_SLASH_COMMAND_RESPONSE(
+				applicationID,
+				interactionToken
+			)}`,
+			{ content: params.content }
 		);
 	}
 }
