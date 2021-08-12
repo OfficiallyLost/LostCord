@@ -1,6 +1,7 @@
 const Message = require('../structures/Message');
 const User = require('../structures/User');
 const constants = require('../Constants');
+const Interaction = require('../structures/Interaction');
 
 async function handleEvents(data, payload) {
 	switch (payload.t) {
@@ -21,7 +22,7 @@ async function handleEvents(data, payload) {
 			break;
 
 		case 'INTERACTION_CREATE':
-			data.client.emit('interactionCreate', payload.d);
+			data.client.emit('interactionCreate', new Interaction(payload.d, data.client));
 			break;
 
 		case 'MESSAGE_CREATE':
