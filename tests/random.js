@@ -8,14 +8,13 @@ client.on('reconnect', (message) => {
 });
 
 client.on('interactionCreate', async (command) => {
-	if (command.data.name === 'test') {
-		client.reply(command.id, command.token, {
-			content: JSON.stringify(command.data),
+	if (command.raw.data.name === 'test') {
+		command.reply(command.raw.id, command.raw.token, {
 			embeds: [
 				{
 					title: 'hi'
 				}
-			] // embed not sending for some reason :thinking:
+			]
 		});
 	}
 });
