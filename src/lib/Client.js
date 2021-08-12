@@ -54,29 +54,25 @@ class Client extends EventEmitter {
 	 * @returns A discord message
 	 */
 
-	createMessage(data = { channel, content, embeds, file, components }) {
+	createMessage({ channel, content, embeds, file, components }) {
 		if (!content instanceof String) return Promise.reject(new Error('content must be of type String'));
 		if (!embeds instanceof Array) return Promise.reject(new Error('embeds must be of type Array'));
 		// No idea what type file is
 		if (!components instanceof Array) return Promise.reject(new Error('components must be of type Array'));
 
 		try {
-			return this.request.createMessage(channel, content, data);
+			return this.request.createMessage(channel, content, embeds, file, components);
 		} catch (error) {
 			console.log(error);
 		}
 	}
 
-	createGlobalCommand(data = { name, description, options }) {
-		this.request.createGuildSlashCommand(this.application.id, data);
+	createGlobalCommand({ name, description, options }) {
+		this.request.createGuildSlashCommand(this.application.id, name, description, options);
 	}
 
-	createGuildCommand(data = { guild, name, description, options }) {
-		this.request.createGuildSlashCommand(this.application.id, guild, data);
-	}
-
-	reply(id, token, data = { content, embeds, file, components }) {
-		this.request.createSlashCommandResponse(id, token, data);
+	createGuildCommand({ guild, name, description, options }) {
+		this.request.createGuildSlashCommand(this.application.id, guild, name, description, options);
 	}
 }
 
