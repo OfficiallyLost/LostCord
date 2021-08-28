@@ -16,6 +16,7 @@ client.on('interactionCreate', async (command) => {
 				}
 			]
 		});
+		command.edit(command.raw.id, command.raw.token, { content: 'hi' });
 	}
 });
 
