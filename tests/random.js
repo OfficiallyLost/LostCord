@@ -7,6 +7,8 @@ client.on('reconnect', (message) => {
 	console.log(message);
 });
 
+client.on('messageUpdate', (message) => console.log(message));
+
 client.on('interactionCreate', async (command) => {
 	if (command.raw.data.name === 'test') {
 		command.reply(command.raw.id, command.raw.token, {
@@ -16,7 +18,8 @@ client.on('interactionCreate', async (command) => {
 				}
 			]
 		});
-		command.edit(command.raw.id, command.raw.token, { content: 'hi' });
+
+		command.edit(command.raw.application_id, command.raw.token, { content: 'hi' });
 	}
 });
 
