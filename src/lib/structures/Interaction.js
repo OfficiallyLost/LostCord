@@ -1,8 +1,5 @@
-const Base = require('./Base');
-
-class Interaction extends Base {
+class Interaction {
 	constructor(raw, client) {
-		super(raw.id);
 		this.raw = raw;
 		Object.defineProperty(this, 'client', { value: client });
 		Object.defineProperty(this, 'request', { value: client.request });
