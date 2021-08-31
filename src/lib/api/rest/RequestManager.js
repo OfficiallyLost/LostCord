@@ -17,7 +17,6 @@ class RequestManager {
 			},
 			data
 		};
-
 		return await axios(options);
 	}
 }
