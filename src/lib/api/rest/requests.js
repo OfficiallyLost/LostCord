@@ -45,12 +45,23 @@ class Request {
 
 	async getChannel(channelID) {
 		if (!channelID) return Promise.reject(new Error('You must enter a channel ID to get data on'));
-
-		return await this.RequestManager.request(
+		const channel = await this.RequestManager.request(
 			'GET',
 			`${this.RequestManager.constants.BASE_URL}${this.endpoints.GET_CHANNEL(channelID)}`
 		);
+		const messages = await this.getChannelMessages(channelID);
+		channel.data.messages = messages.data;
+		return channel;
 	}
+
+	async getChannelMessages(channelID) {
+		if (!channelID) return Promise.reject(new Error('You must enter a channel ID to get data on'));
+		return await this.RequestManager.request(
+			'GET',
+			`${this.RequestManager.constants.BASE_URL}${this.endpoints.GET_CHANNEL_MESSAGES(channelID)}`
+		);
+	}
+
 	async getAvatar(userID, avatar) {
 		if (!userID) return Promise.reject(new Error('You must enter a user ID to view their avatar'));
 		if (!avatar) return Promise.reject(new Error('You must enter an avatar to view their avatar'));
@@ -151,14 +162,14 @@ class Request {
 
 	async editSlashCommandResponse(applicationID, interactionToken, params) {
 		if (!applicationID || !interactionToken) return Promise.reject(new Error('You must provide the valid params'));
-		console.log(this.endpoints.EDIT_SLASH_COMMAND_RESPONSE(applicationID, interactionToken));
+
 		return await this.RequestManager.request(
 			'PATCH',
-			`${this.RequestManager.constants.BASEURL}${this.endpoints.EDIT_SLASH_COMMAND_RESPONSE(
+			`${this.RequestManager.constants.BASE_URL}${this.endpoints.EDIT_SLASH_COMMAND_RESPONSE(
 				applicationID,
 				interactionToken
 			)}`,
-			{ content: params.content }
+			JSON.stringify({ content: params.content, embeds: params.embed, components: params.components })
 		);
 	}
 }
