@@ -14,6 +14,10 @@ module.exports.GET_CHANNEL = (channelID) => {
 	return `/channels/${channelID}`;
 };
 
+module.exports.GET_CHANNEL_MESSAGES = (channelID) => {
+	return `/channels/${channelID}/messages`;
+};
+
 module.exports.GET_USER = (userID) => {
 	return `/users/${userID}`;
 };
