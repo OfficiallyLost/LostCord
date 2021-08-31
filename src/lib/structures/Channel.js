@@ -10,6 +10,12 @@ class Channel extends Base {
 	get type() {
 		return this.raw.type;
 	}
+
+	get messages() {
+		return async function() {
+			await this.client.request.getChannelMessages(raw.id);
+		};
+	}
 }
 
 module.exports = Channel;
