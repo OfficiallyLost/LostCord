@@ -1,6 +1,5 @@
 const Message = require('../structures/Message');
 const User = require('../structures/User');
-const constants = require('../Constants');
 const Interaction = require('../structures/Interaction');
 
 async function handleEvents(data, payload) {
@@ -27,6 +26,13 @@ async function handleEvents(data, payload) {
 
 		case 'MESSAGE_CREATE':
 			data.client.emit('messageCreate', new Message(payload.d, data.client));
+			break;
+
+		case 'MESSAGE_UPDATE':
+			const channel = await data.client.request.getChannel(payload.d.channel_id);
+			let oldMessage = null;
+			console.log(channel);
+			data.client.emit('messageUpdate', payload.d);
 			break;
 
 		case 'GUILD_CREATE':
